@@ -244,7 +244,7 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
             
             // KORAK 4.1: Alternativni scenario (Nema rezultata)
             if (listaGE == null || listaGE.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Систем не може да нађе услуге по задатим критеријумима.", "Обавештење", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Систем не може да нађе услуге по задатим критеријумима.", "Обавештење", JOptionPane.ERROR_MESSAGE);
                 // Cistimo tabelu
                 utm.setListaUsluga(new ArrayList<>());
                 sptm.setListaStavki(new ArrayList<>());
@@ -440,18 +440,33 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
         }
 
         try {
+            // Корак 5: Зубар бира услугу
             Usluga u = utm.getUslugaAt(row);
+
+            // Корак 6 и 7: Систем тражи услугу (њене ставке)
+            
             List<GenericEntity> lista = ClientController.getInstance().getStavkeByUsluga(u);
+            
+            // ДОДАЈ ОВО: Ако је листа празна, значи да је услуга обрисана у међувремену!
+            if (lista == null || lista.isEmpty()) {
+                throw new Exception("Услуга више не постоји у бази.");
+            }
+            
             List<StavkaUsluge> stavke = new ArrayList<>();
 
             for (GenericEntity ge : lista) {
                 stavke.add((StavkaUsluge) ge);
             }
 
+            // Пунимо доњу табелу
             sptm.setListaStavki(stavke);
 
+            // Корак 8: Систем приказује поруку (ДОДАЈЕМО ОВО)
+            JOptionPane.showMessageDialog(this, "Систем је нашао услугу.", "Информација", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            // Алтернативни сценарио 8.1: Мењамо e.getMessage() у тачан текст из документације
+            JOptionPane.showMessageDialog(this, "Систем не може да нађе услугу", "Грешка", JOptionPane.ERROR_MESSAGE);
         }
     }
     

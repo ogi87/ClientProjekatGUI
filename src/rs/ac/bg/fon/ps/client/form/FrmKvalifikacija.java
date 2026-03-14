@@ -158,18 +158,34 @@ public class FrmKvalifikacija extends javax.swing.JFrame {
         }
     }
 
-    private void dodajKvalifikaciju() {
+        private void dodajKvalifikaciju() {
         try {
-            Kvalifikacija k = new Kvalifikacija();
-            k.setNaziv(txtNaziv.getText());
+            // Корак 1: Зубар уноси податке
+            String naziv = txtNaziv.getText().trim();
 
+            // Корак 2: Зубар контролише да ли је коректно унео податке
+            if (naziv.isEmpty()) {
+                throw new Exception("Празно поље"); 
+            }
+
+            Kvalifikacija k = new Kvalifikacija();
+            k.setNaziv(naziv);
+
+            // Корак 3 и 4: Систем памти
             ClientController.getInstance().addKvalifikacija(k);
 
-            JOptionPane.showMessageDialog(this, "Kvalifikacija dodata");
+            // Корак 5: Порука о успеху из документације
+            JOptionPane.showMessageDialog(this, "Систем је запамтио квалификације.", "Успех", JOptionPane.INFORMATION_MESSAGE);
+
+            // ОСВЕЖАВАЊЕ ТАБЕЛЕ (твој део који је недостајао)
             ucitajKvalifikacije();
 
+            // Чистимо поље за следећи унос
+            txtNaziv.setText("");
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            // Алтернативни сценарио 5.1
+            JOptionPane.showMessageDialog(this, "Систем не може да запамти квалификације", "Грешка", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

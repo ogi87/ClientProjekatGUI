@@ -29,10 +29,9 @@ public class ClientController {
         return instance;
     }
 
-    public Zubar login(String korisnickoIme, String sifra) throws Exception {
-        Object[] podaci = new Object[]{korisnickoIme, sifra};
-
-        Request request = new Request(Operations.LOGIN, podaci);
+    public Zubar login(Zubar zubar) throws Exception {
+        // Уместо низа објеката, сада шаљемо целог зубара на сервер!
+        Request request = new Request(Operations.LOGIN, zubar);
         Communication.getInstance().sendRequest(request);
 
         Response response = Communication.getInstance().receiveResponse();

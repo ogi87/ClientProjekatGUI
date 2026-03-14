@@ -113,7 +113,6 @@ public class FrmKlijent extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         cmbKategorija = new javax.swing.JComboBox<>();
         btnZapamti = new javax.swing.JButton();
-        btnIzmeni = new javax.swing.JButton();
         btnObrisi = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblKlijent = new javax.swing.JTable();
@@ -140,13 +139,6 @@ public class FrmKlijent extends javax.swing.JFrame {
         btnZapamti.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnZapamtiActionPerformed(evt);
-            }
-        });
-
-        btnIzmeni.setText("Izmeni");
-        btnIzmeni.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIzmeniActionPerformed(evt);
             }
         });
 
@@ -208,9 +200,7 @@ public class FrmKlijent extends javax.swing.JFrame {
                                 .addComponent(btnKreiraj, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnZapamti, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnIzmeni)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(96, 96, 96)
                                 .addComponent(btnObrisi)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnSacuvaj))
@@ -239,7 +229,6 @@ public class FrmKlijent extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnZapamti)
-                    .addComponent(btnIzmeni)
                     .addComponent(btnObrisi)
                     .addComponent(btnKreiraj)
                     .addComponent(btnSacuvaj))
@@ -258,10 +247,6 @@ public class FrmKlijent extends javax.swing.JFrame {
     private void btnZapamtiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZapamtiActionPerformed
         dodajKlijenta();
     }//GEN-LAST:event_btnZapamtiActionPerformed
-
-    private void btnIzmeniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzmeniActionPerformed
-        izmeniKlijenta();
-    }//GEN-LAST:event_btnIzmeniActionPerformed
 
     private void btnObrisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisiActionPerformed
         obrisiKlijenta();
@@ -342,7 +327,6 @@ public class FrmKlijent extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnIzmeni;
     private javax.swing.JButton btnKreiraj;
     private javax.swing.JButton btnObrisi;
     private javax.swing.JButton btnSacuvaj;
@@ -528,7 +512,7 @@ public class FrmKlijent extends javax.swing.JFrame {
             // Dugmici
             btnKreiraj.setEnabled(true);
             btnZapamti.setEnabled(false);
-            btnIzmeni.setEnabled(false);
+        
             btnObrisi.setEnabled(false);
             btnSacuvaj.setEnabled(false);
 
@@ -553,7 +537,6 @@ public class FrmKlijent extends javax.swing.JFrame {
             
             btnKreiraj.setEnabled(false);
             btnZapamti.setEnabled(true);
-            btnIzmeni.setEnabled(true);
             btnObrisi.setEnabled(true);
             tblKlijent.setEnabled(true);
 
@@ -573,8 +556,7 @@ public class FrmKlijent extends javax.swing.JFrame {
         btnSacuvaj.setVisible(true); // Proveri da li je vidljivo
 
         btnKreiraj.setVisible(false);
-        btnZapamti.setVisible(false);
-        btnIzmeni.setVisible(false); 
+        btnZapamti.setVisible(false); 
         btnObrisi.setVisible(false);
 
         jScrollPane1.setVisible(false); 
@@ -588,7 +570,6 @@ public class FrmKlijent extends javax.swing.JFrame {
         // Сакривамо све што нам не треба
         btnKreiraj.setVisible(false);
         btnZapamti.setVisible(false);
-        btnIzmeni.setVisible(false);
         btnSacuvaj.setVisible(false); // Ово је оно дугме за Update
         jScrollPane1.setVisible(false);
 

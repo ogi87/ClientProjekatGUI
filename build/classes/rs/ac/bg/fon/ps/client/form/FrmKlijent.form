@@ -62,9 +62,7 @@
                               <Component id="btnKreiraj" min="-2" pref="72" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="btnZapamti" min="-2" pref="72" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="btnIzmeni" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
                               <Component id="btnObrisi" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnSacuvaj" min="-2" max="-2" attributes="0"/>
@@ -103,7 +101,6 @@
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnZapamti" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnIzmeni" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnObrisi" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnKreiraj" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnSacuvaj" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -161,14 +158,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnZapamtiActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnIzmeni">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Izmeni"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIzmeniActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnObrisi">

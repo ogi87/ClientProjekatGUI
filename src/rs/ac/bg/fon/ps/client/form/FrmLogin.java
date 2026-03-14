@@ -91,26 +91,47 @@ public class FrmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        try {
-            String username = txtUsername.getText().trim();
-            String password = String.valueOf(txtPassword.getPassword()).trim();
+            try {
+            // Корак 1: Зубар уноси корисничко име и шифру
+            String username = txtUsername.getText().trim(); // Провери како ти се зове ово поље (txtKorisnickoIme или txtUsername)
+            String password = new String(txtPassword.getPassword()); // Провери како ти се зове ово поље (txtSifra или txtPassword)
 
+            // Корак 2: Зубар контролише да ли је коректно унео податке
             if (username.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Unesite korisnicko ime i sifru.");
+                JOptionPane.showMessageDialog(this, "Корисничко име и шифра су обавезна поља!", "Упозорење", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            Zubar ulogovani = ClientController.getInstance().login(username, password);
+            // Припрема објекта за претрагу
+            Zubar zubar = new Zubar();
+            zubar.setKorisnickoIme(username);
+            zubar.setSifra(password);
 
-            JOptionPane.showMessageDialog(this,
-                    "Uspesno ste se prijavili: " + ulogovani.getIme() + " " + ulogovani.getPrezime());
+            // Корак 3 и 4: Зубар позива систем и систем проверава (ово гађа твој нови LoginSO)
+            Zubar ulogovaniZubar = ClientController.getInstance().login(zubar);
 
-            FrmMain frmMain = new FrmMain(ulogovani);
-            frmMain.setVisible(true);
-            this.dispose();
+            // Корак 5: Порука о успеху (ОБАВЕЗНО ТАЧАН ТЕКСТ ИЗ ДОКУМЕНТАЦИЈЕ)
+            JOptionPane.showMessageDialog(this, "Корисничко име и шифра су исправни.", "Информација", JOptionPane.INFORMATION_MESSAGE);
+
+            // Корак 6: КИ позива главну форму и мени
+            try {
+                // Отварање главне форме (претпостављам да прослеђујеш улогованог зубара)
+                FrmMain frmMain = new FrmMain(ulogovaniZubar); 
+                frmMain.setVisible(true);
+
+                // Затварање форме за пријављивање
+                this.dispose(); 
+
+            } catch (Exception ex) {
+                // Алтернативни сценарио 6.1: Грешка при отварању форме
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Не може да се отвори главна форма и мени", "Грешка", JOptionPane.ERROR_MESSAGE);
+            }
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Greska pri loginu: " + ex.getMessage());
+            // Алтернативни сценарио 5.1: Ако LoginSO баци Exception јер листа није нађена
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Корисничко име и шифра нису исправни", "Грешка", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
