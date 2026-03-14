@@ -271,7 +271,7 @@ public class FrmKlijent extends javax.swing.JFrame {
         klijentZaIzmenu.setKategorija((KategorijaKlijenta) cmbKategorija.getSelectedItem());
 
         // Korak 11 i 12: Poziv sistema da zapamti (UPDATE)
-        ClientController.getInstance().updateKlijent(klijentZaIzmenu);
+        ClientController.getInstance().zapamtiKlijenta(klijentZaIzmenu);
 
         // Korak 13: Poruka o uspehu
         JOptionPane.showMessageDialog(this, "Систем је запамтио клијента.", "Успех", JOptionPane.INFORMATION_MESSAGE);
@@ -430,7 +430,7 @@ public class FrmKlijent extends javax.swing.JFrame {
             k.setKontakt(txtKontakt.getText());
             k.setKategorija((KategorijaKlijenta)cmbKategorija.getSelectedItem());
 
-            ClientController.getInstance().updateKlijent(k);
+            ClientController.getInstance().zapamtiKlijenta(k);
 
             JOptionPane.showMessageDialog(this,"Klijent izmenjen");
             ocistiFormu();

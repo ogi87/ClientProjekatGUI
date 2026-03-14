@@ -325,7 +325,7 @@ public class FrmUsluga extends javax.swing.JFrame {
 
     private void btnKreirajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKreirajActionPerformed
         try {
-            rs.ac.bg.fon.ps.common.domain.Usluga inicijalna = new rs.ac.bg.fon.ps.common.domain.Usluga();
+            Usluga inicijalna = new Usluga();
             inicijalna.setNaziv("Nova usluga");
             inicijalna.setUkupanIznos(0);
             inicijalna.setPopust(0);
@@ -364,7 +364,7 @@ public class FrmUsluga extends javax.swing.JFrame {
             
 
         } catch (Exception ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Систем не може да креира услугу.\n" + ex.getMessage(), "Грешка", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Систем не може да креира услугу." , "Грешка", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnKreirajActionPerformed
 
@@ -601,7 +601,7 @@ public class FrmUsluga extends javax.swing.JFrame {
             } else {
                // System.out.println("SALJEM NA SERVER STAVKI: " + u.getStavke().size());
                 
-                ClientController.getInstance().updateUsluga(u);
+                ClientController.getInstance().zapamtiUslugu(u);
                 // Poruka za SK3 (Izmeni/Promeni)
                 JOptionPane.showMessageDialog(this, "Систем је запамтио податке о услузи.", "Успех", JOptionPane.INFORMATION_MESSAGE);
                 
@@ -615,6 +615,7 @@ public class FrmUsluga extends javax.swing.JFrame {
 
         } catch (Exception e) {
             // Obavezne alternativne poruke u slucaju greske baze/servera
+            e.printStackTrace(); // OVO NAM TREBA!
             if (kreiranaUsluga != null) {
                 JOptionPane.showMessageDialog(this, "Систем не може да запамти услугу." , "Грешка", JOptionPane.ERROR_MESSAGE);
             } else {

@@ -22,6 +22,11 @@ public class Communication {
             e.printStackTrace();
         }
     }
+    
+    // Ова метода нам омогућава да "убијемо" стару конекцију
+    public static void resetInstance() {
+        instance = null;
+    }
 
     public static Communication getInstance() {
         if (instance == null) {

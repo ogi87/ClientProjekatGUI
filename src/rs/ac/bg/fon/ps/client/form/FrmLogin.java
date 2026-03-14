@@ -7,6 +7,7 @@ package rs.ac.bg.fon.ps.client.form;
 //import javax.swing.JFrame;
 
 import javax.swing.JOptionPane;
+import rs.ac.bg.fon.ps.client.communication.Communication;
 import rs.ac.bg.fon.ps.client.controller.ClientController;
 import rs.ac.bg.fon.ps.common.domain.Zubar;
 
@@ -129,10 +130,18 @@ public class FrmLogin extends javax.swing.JFrame {
             }
 
         } catch (Exception ex) {
-            // Алтернативни сценарио 5.1: Ако LoginSO баци Exception јер листа није нађена
-            ex.printStackTrace();
+        ex.printStackTrace();
+        
+        // Проверавамо да ли је грешка баш она коју је наш LoginSO бацио
+        if (ex.getMessage() != null && ex.getMessage().equals("Корисничко име и шифра нису исправни")) {
             JOptionPane.showMessageDialog(this, "Корисничко име и шифра нису исправни", "Грешка", JOptionPane.ERROR_MESSAGE);
-        }
+        } else {
+            // Ако је било шта друго (нпр. угашен сервер, пукла мрежа...)
+            JOptionPane.showMessageDialog(this, "Прекинута је веза са сервером! Проверите да ли је сервер покренут.", "Грешка мреже", JOptionPane.ERROR_MESSAGE);
+            
+            // МАГИЈА: Ресетујемо конекцију! Тако да кад зубар следећи пут кликне "Пријави се", клијент покуша изнова.
+            Communication.resetInstance(); 
+        }     }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
