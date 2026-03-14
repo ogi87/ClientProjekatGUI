@@ -24,7 +24,7 @@ public class FrmUsluga extends javax.swing.JFrame {
 
     private FrmPregledUsluga parentForma;
     private StavkaUslugeTableModel sutm;
-    
+    private Usluga kreiranaUsluga;
     private Usluga uslugaZaIzmenu;
    
     
@@ -37,15 +37,49 @@ public class FrmUsluga extends javax.swing.JFrame {
         ucitajZubare();
         ucitajKlijente();
         ucitajMaterijale();
+        
+        
     }
     
     public FrmUsluga(FrmPregledUsluga parentForma, Usluga usluga){
         this();
         this.parentForma = parentForma;
         this.uslugaZaIzmenu = usluga;
+        
+        // --- OVO JE DEO KOJI DODAJEMO DA OTKLJUČAMO FORMU ZA SK3 ---
+        // Otključavamo sva polja za unos
+        txtNaziv.setEnabled(true);
+        cmbZubar.setEnabled(true);
+        cmbKlijent.setEnabled(true);
+        cmbMaterijal.setEnabled(true);
+        txtKolicina.setEnabled(true);
+        txtPopust.setEnabled(true);
+        tblStavke.setEnabled(true);
+       
+        
+        // Otključavamo dugmiće za rad sa tabelom
+        btnDodajStavku.setEnabled(true);
+        btnObrisiStavku.setEnabled(true);
+        
+        // Palimo dugme za čuvanje izmena
+        btnSacuvaj.setEnabled(true);
+        btnIzracunaj.setEnabled(true);
+        txtPopust.setEnabled(true);
+        
+        
+        btnSacuvaj.setText("Izmeni uslugu");
+        
+        // Gasimo i sakrivamo dugme "Kreiraj" jer nam ovde ne treba
+        if (btnKreiraj != null) {
+            btnKreiraj.setEnabled(false);
+            btnKreiraj.setVisible(false);
+        }
+        
         popuniFormu(usluga);
         btnSacuvaj.setText("Izmeni uslugu");
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,20 +112,32 @@ public class FrmUsluga extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txtUkupanSaPopustom = new javax.swing.JTextField();
         btnSacuvaj = new javax.swing.JButton();
+        btnKreiraj = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Naziv usluge:");
 
+        txtNaziv.setEnabled(false);
+
         jLabel2.setText("Zubar:");
 
+        cmbZubar.setEnabled(false);
+
         jLabel3.setText("Klijent:");
+
+        cmbKlijent.setEnabled(false);
 
         jLabel4.setText("Materijal:");
 
         jLabel5.setText("Kolicina:");
 
+        cmbMaterijal.setEnabled(false);
+
+        txtKolicina.setEnabled(false);
+
         btnDodajStavku.setText("Dodaj stavku");
+        btnDodajStavku.setEnabled(false);
         btnDodajStavku.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDodajStavkuActionPerformed(evt);
@@ -99,6 +145,7 @@ public class FrmUsluga extends javax.swing.JFrame {
         });
 
         btnObrisiStavku.setText("Obrisi stavku");
+        btnObrisiStavku.setEnabled(false);
         btnObrisiStavku.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnObrisiStavkuActionPerformed(evt);
@@ -106,10 +153,12 @@ public class FrmUsluga extends javax.swing.JFrame {
         });
 
         tblStavke.setModel(sutm);
+        tblStavke.setEnabled(false);
         jScrollPane1.setViewportView(tblStavke);
 
         jLabel6.setText("Popust:");
 
+        txtPopust.setEnabled(false);
         txtPopust.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPopustActionPerformed(evt);
@@ -117,6 +166,7 @@ public class FrmUsluga extends javax.swing.JFrame {
         });
 
         btnIzracunaj.setText("Izracunaj");
+        btnIzracunaj.setEnabled(false);
         btnIzracunaj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIzracunajActionPerformed(evt);
@@ -126,15 +176,25 @@ public class FrmUsluga extends javax.swing.JFrame {
         jLabel7.setText("Ukupan iznos:");
 
         txtUkupanIznos.setEditable(false);
+        txtUkupanIznos.setEnabled(false);
 
         jLabel8.setText("Ukupno sa popustom:");
 
         txtUkupanSaPopustom.setEditable(false);
+        txtUkupanSaPopustom.setEnabled(false);
 
         btnSacuvaj.setText("Sacuvaj uslugu");
+        btnSacuvaj.setEnabled(false);
         btnSacuvaj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSacuvajActionPerformed(evt);
+            }
+        });
+
+        btnKreiraj.setText("Kreiraj");
+        btnKreiraj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKreirajActionPerformed(evt);
             }
         });
 
@@ -145,15 +205,33 @@ public class FrmUsluga extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnIzracunaj, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtPopust, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                                .addComponent(jLabel7)))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtUkupanIznos, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                        .addGap(63, 63, 63)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addGap(18, 18, 18)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtUkupanSaPopustom, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnSacuvaj, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnKreiraj)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtNaziv)
                                     .addComponent(cmbZubar, 0, 163, Short.MAX_VALUE)
@@ -172,28 +250,10 @@ public class FrmUsluga extends javax.swing.JFrame {
                                         .addGap(76, 76, 76)
                                         .addComponent(btnDodajStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                                        .addComponent(btnObrisiStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(61, 61, 61)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtPopust, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel7)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtUkupanIznos, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel8)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtUkupanSaPopustom, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnIzracunaj, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnSacuvaj, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(83, 83, 83)))))
+                                        .addComponent(btnObrisiStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,32 +268,36 @@ public class FrmUsluga extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cmbZubar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtKolicina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)))
+                    .addComponent(txtKolicina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(cmbZubar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cmbKlijent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnObrisiStavku))
+                    .addComponent(btnObrisiStavku)
+                    .addComponent(cmbKlijent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDodajStavku))
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
+                .addComponent(btnKreiraj)
+                .addGap(14, 14, 14)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtPopust, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtUkupanIznos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtUkupanSaPopustom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnIzracunaj)
-                    .addComponent(btnSacuvaj))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtPopust, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addGap(23, 23, 23)
+                        .addComponent(btnIzracunaj))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtUkupanIznos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8)
+                            .addComponent(txtUkupanSaPopustom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSacuvaj)))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -258,6 +322,51 @@ public class FrmUsluga extends javax.swing.JFrame {
     private void btnSacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacuvajActionPerformed
         sacuvajIliIzmeniUslugu();
     }//GEN-LAST:event_btnSacuvajActionPerformed
+
+    private void btnKreirajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKreirajActionPerformed
+        try {
+            rs.ac.bg.fon.ps.common.domain.Usluga inicijalna = new rs.ac.bg.fon.ps.common.domain.Usluga();
+            inicijalna.setNaziv("Nova usluga");
+            inicijalna.setUkupanIznos(0);
+            inicijalna.setPopust(0);
+            inicijalna.setUkupanIznosSaPopustom(0);
+            
+            Zubar z = new Zubar(); 
+            z.setZubarId(1L);
+            inicijalna.setZubar(z);
+            
+            Klijent k = new Klijent(); 
+            k.setKlijentId(1L);
+            inicijalna.setKlijent(k);
+
+            // Pozivamo server
+            this.kreiranaUsluga = ClientController.getInstance().kreirajUslugu(inicijalna);
+            
+            // OBAVEZNA PORUKA IZ SK1
+            javax.swing.JOptionPane.showMessageDialog(this, "Систем је креирао услугу.", "Обавештење", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            
+            // OTKLJUČAVAMO FORMU
+            btnKreiraj.setEnabled(false); // Sakrivamo/gasimo dugme Kreiraj
+            btnSacuvaj.setEnabled(true);  // Palimo dugme Zapamti/Sacuvaj
+            btnDodajStavku.setEnabled(true);
+            btnObrisiStavku.setEnabled(true);
+            btnIzracunaj.setEnabled(true);
+            txtNaziv.setEnabled(true);
+            cmbKlijent.setEnabled(true);
+            cmbMaterijal.setEnabled(true);
+            cmbZubar.setEnabled(true);
+            tblStavke.setEnabled(true);
+            txtKolicina.setEnabled(true);
+            txtPopust.setEnabled(true);
+            txtUkupanIznos.setEnabled(true);
+            txtUkupanSaPopustom.setEnabled(true);
+            
+            
+
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Систем не може да креира услугу.\n" + ex.getMessage(), "Грешка", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnKreirajActionPerformed
 
     /**
      * @param args the command line arguments
@@ -297,6 +406,7 @@ public class FrmUsluga extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDodajStavku;
     private javax.swing.JButton btnIzracunaj;
+    private javax.swing.JButton btnKreiraj;
     private javax.swing.JButton btnObrisiStavku;
     private javax.swing.JButton btnSacuvaj;
     private javax.swing.JComboBox<Klijent> cmbKlijent;
@@ -443,7 +553,8 @@ public class FrmUsluga extends javax.swing.JFrame {
             }
 
             if (sutm.getLista().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Dodajte bar jednu stavku.");
+                // KORAK 13.1: Hvatamo grešku već na klijentu
+                JOptionPane.showMessageDialog(this, "Систем не може да запамти податке о услузи.", "Грешка", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -452,11 +563,22 @@ public class FrmUsluga extends javax.swing.JFrame {
                 return;
             }
 
-            Usluga u = new Usluga();
-            if (uslugaZaIzmenu != null) {
-                u.setUslugaId(uslugaZaIzmenu.getUslugaId());
+            // --- POCETAK GLAVNE IZMENE ---
+            Usluga u;
+            boolean isKreiraj = false;
+
+            // Proveravamo u kom smo rezimu (SK1 - Kreiraj ili SK3 - Izmeni)
+            if (kreiranaUsluga != null) {
+                u = kreiranaUsluga; // Koristimo onu koja vec ima kreiran ID iz baze
+                isKreiraj = true;
+            } else if (uslugaZaIzmenu != null) {
+                u = uslugaZaIzmenu; // Koristimo onu koju menjamo
+            } else {
+                JOptionPane.showMessageDialog(this, "Greska: Nije prosledjena usluga formi!");
+                return;
             }
 
+            // Setujemo podatke sa ekrana u taj objekat
             u.setNaziv(naziv);
             u.setZubar(zubar);
             u.setKlijent(klijent);
@@ -471,22 +593,33 @@ public class FrmUsluga extends javax.swing.JFrame {
             u.setPopust(popust);
             u.setUkupanIznosSaPopustom(Double.parseDouble(txtUkupanSaPopustom.getText().trim()));
 
-            if (uslugaZaIzmenu == null) {
-                ClientController.getInstance().addUsluga(u);
-                JOptionPane.showMessageDialog(this, "Usluga uspesno sacuvana.");
+            // Pozivi ka serveru i PORUKE IZ WORD DOKUMENTA
+            if (isKreiraj) {
+                ClientController.getInstance().zapamtiUslugu(u);
+                // Obavezna poruka iz SK1:
+                JOptionPane.showMessageDialog(this, "Систем је запамтио услугу.", "Успех", JOptionPane.INFORMATION_MESSAGE);
             } else {
+               // System.out.println("SALJEM NA SERVER STAVKI: " + u.getStavke().size());
+                
                 ClientController.getInstance().updateUsluga(u);
-                JOptionPane.showMessageDialog(this, "Usluga uspesno izmenjena.");
+                // Poruka za SK3 (Izmeni/Promeni)
+                JOptionPane.showMessageDialog(this, "Систем је запамтио податке о услузи.", "Успех", JOptionPane.INFORMATION_MESSAGE);
                 
                 if(parentForma != null){
-                    parentForma.osveziTabeluUsluga();
+               
+                    parentForma.osveziTabelu();
                 }
             }
             
             dispose();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            // Obavezne alternativne poruke u slucaju greske baze/servera
+            if (kreiranaUsluga != null) {
+                JOptionPane.showMessageDialog(this, "Систем не може да запамти услугу." , "Грешка", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Систем не може да запамти податке о услузи." , "Грешка", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -500,14 +633,11 @@ public class FrmUsluga extends javax.swing.JFrame {
             cmbZubar.setSelectedItem(u.getZubar());
             cmbKlijent.setSelectedItem(u.getKlijent());
 
-            List<GenericEntity> lista = ClientController.getInstance().getStavkeByUsluga(u);
-            List<StavkaUsluge> stavke = new ArrayList<>();
-
-            for (GenericEntity ge : lista) {
-                stavke.add((StavkaUsluge) ge);
+            // OVO JE PROMENJENO: Ne idemo ponovo na server!
+            // Samo uzimamo stavke koje smo vec prosledili kroz objekat 'u'
+            if (u.getStavke() != null) {
+                sutm.setLista(new ArrayList<>(u.getStavke()));
             }
-
-            sutm.setLista(stavke);
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Greska pri popunjavanju forme: " + e.getMessage());

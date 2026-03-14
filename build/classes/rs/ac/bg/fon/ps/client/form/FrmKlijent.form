@@ -26,19 +26,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="btnDodaj" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnIzmeni" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnObrisi" min="-2" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="txtKontakt" max="32767" attributes="0"/>
-                      </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -55,26 +43,33 @@
                               </Group>
                           </Group>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="cmbKategorija" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtKontakt" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
                   <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                      <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="151" max="-2" attributes="0"/>
-                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="txtPretraga" min="-2" pref="94" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="btnPretrazi" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="cmbKategorija" max="32767" attributes="0"/>
-                                  <EmptySpace min="-2" pref="266" max="-2" attributes="0"/>
-                              </Group>
+                          <EmptySpace min="-2" pref="400" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="btnKreiraj" min="-2" pref="72" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnZapamti" min="-2" pref="72" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnIzmeni" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnObrisi" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="btnSacuvaj" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -89,9 +84,6 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtIme" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtPretraga" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnPretrazi" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -108,15 +100,17 @@
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmbKategorija" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnDodaj" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnZapamti" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnIzmeni" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnObrisi" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnKreiraj" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnSacuvaj" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="312" max="-2" attributes="0"/>
-              <EmptySpace pref="64" max="32767" attributes="0"/>
+              <EmptySpace pref="55" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -146,21 +140,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtKontakt">
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel4">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Pretraga:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtPretraga">
-    </Component>
-    <Component class="javax.swing.JButton" name="btnPretrazi">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Pretrazi"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPretraziActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
         <Property name="text" type="java.lang.String" value="Kategorija:"/>
@@ -176,12 +155,12 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;KategorijaKlijenta&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JButton" name="btnDodaj">
+    <Component class="javax.swing.JButton" name="btnZapamti">
       <Properties>
         <Property name="text" type="java.lang.String" value="Dodaj"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDodajActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnZapamtiActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnIzmeni">
@@ -216,5 +195,21 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="btnKreiraj">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Kreiraj"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnKreirajActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnSacuvaj">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Sacuvaj"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSacuvajActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

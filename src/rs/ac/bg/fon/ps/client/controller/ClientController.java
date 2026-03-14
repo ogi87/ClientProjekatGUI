@@ -53,6 +53,59 @@ public class ClientController {
             throw response.getException();
         }
     }
+    
+    public Usluga kreirajUslugu(Usluga u) throws Exception {
+        // Pravimo zahtev
+        Request request = new Request(Operations.KREIRAJ_USLUGU, u);
+        Communication.getInstance().sendRequest(request);
+
+        // Čekamo odgovor
+        Response response = Communication.getInstance().receiveResponse();
+
+        // Ako je uspešno, vraćamo kreiranu uslugu (sa ID-jem)
+        if (response.getResponseType() == ResponseType.SUCCESS) {
+            return (Usluga) response.getResult();
+        } else {
+            throw response.getException();
+        }
+    }
+
+    public void zapamtiUslugu(Usluga u) throws Exception {
+        // Pravimo zahtev
+        Request request = new Request(Operations.ZAPAMTI_USLUGU, u);
+        Communication.getInstance().sendRequest(request);
+
+        // Čekamo odgovor
+        Response response = Communication.getInstance().receiveResponse();
+        
+        // Bacamo izuzetak ako je došlo do greške pri pamćenju
+        if (response.getResponseType() == ResponseType.ERROR) {
+            throw response.getException();
+        }
+    }
+    
+    public Klijent kreirajKlijenta() throws Exception {
+        Request request = new Request(Operations.KREIRAJ_KLIJENTA, null);
+        Communication.getInstance().sendRequest(request);
+
+        Response response = Communication.getInstance().receiveResponse();
+        if (response.getResponseType() == ResponseType.SUCCESS) {
+            return (Klijent) response.getResult();
+        } else {
+            throw response.getException();
+        }
+    }
+
+    // 2. Zahtev za čuvanje (Korak 6 i 7)
+    public void zapamtiKlijenta(Klijent klijent) throws Exception {
+        Request request = new Request(Operations.ZAPAMTI_KLIJENTA, klijent);
+        Communication.getInstance().sendRequest(request);
+
+        Response response = Communication.getInstance().receiveResponse();
+        if (response.getResponseType() != ResponseType.SUCCESS) {
+            throw response.getException();
+        }
+    }
 
     public List<GenericEntity> getAllKlijent() throws Exception {
         Request request = new Request(Operations.GET_ALL_KLIJENT, null);
@@ -86,8 +139,9 @@ public class ClientController {
         }
     }
 
-    public List<GenericEntity> searchKlijent(String kriterijum) throws Exception {
-        Request request = new Request(Operations.SEARCH_KLIJENT, kriterijum);
+    public List<GenericEntity> searchKlijent(Klijent klijent) throws Exception {
+        // Sada saljemo ceo objekat Klijent na server
+        Request request = new Request(Operations.SEARCH_KLIJENT, klijent);
         Communication.getInstance().sendRequest(request);
 
         Response response = Communication.getInstance().receiveResponse();
@@ -172,8 +226,8 @@ public class ClientController {
         }
     }
 
-    public List<GenericEntity> searchUsluga(String kriterijum) throws Exception {
-        Request request = new Request(Operations.SEARCH_USLUGA, kriterijum);
+    public List<GenericEntity> searchUsluga(Usluga u) throws Exception {
+        Request request = new Request(Operations.SEARCH_USLUGA, u); // Saljemo objekat
         Communication.getInstance().sendRequest(request);
 
         Response response = Communication.getInstance().receiveResponse();

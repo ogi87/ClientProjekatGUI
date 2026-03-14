@@ -11,8 +11,11 @@ import rs.ac.bg.fon.ps.client.controller.ClientController;
 import rs.ac.bg.fon.ps.client.model.StavkaPregledTableModel;
 import rs.ac.bg.fon.ps.client.model.UslugaTableModel;
 import rs.ac.bg.fon.ps.common.domain.GenericEntity;
+import rs.ac.bg.fon.ps.common.domain.Klijent;
+import rs.ac.bg.fon.ps.common.domain.Materijal;
 import rs.ac.bg.fon.ps.common.domain.StavkaUsluge;
 import rs.ac.bg.fon.ps.common.domain.Usluga;
+import rs.ac.bg.fon.ps.common.domain.Zubar;
 
 /**
  *
@@ -31,6 +34,9 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
         sptm = new StavkaPregledTableModel();
         initComponents();
         ucitajUsluge();
+        ucitajKlijente();
+        ucitajMaterijale();
+        ucitajZubare();
     }
 
     /**
@@ -51,8 +57,20 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
         tblUsluga = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblStavke = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        cmbZubar = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        cmbKlijent = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        cmbMaterijal = new javax.swing.JComboBox<>();
+        cbNaziv = new javax.swing.JCheckBox();
+        cbZubar = new javax.swing.JCheckBox();
+        cbKlijent = new javax.swing.JCheckBox();
+        cbMaterijal = new javax.swing.JCheckBox();
+        btnReset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1000, 900));
 
         jLabel1.setText("Pretraga:");
 
@@ -83,52 +101,171 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
         tblStavke.setModel(sptm);
         jScrollPane2.setViewportView(tblStavke);
 
+        jLabel2.setText("Zubar:");
+
+        jLabel3.setText("Klijent");
+
+        jLabel4.setText("Materijal:");
+
+        btnReset.setText("Reset pretrage");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtPretraga, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPretrazi, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPrikaziStavke, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnIzmeniUslugu))
+                        .addGap(40, 40, 40)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbNaziv)
+                            .addComponent(jScrollPane2)
+                            .addComponent(jScrollPane1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(btnIzmeniUslugu, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(btnPrikaziStavke, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPretraga, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cmbZubar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel3))
+                            .addComponent(cbZubar))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cmbKlijent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel4))
+                            .addComponent(cbKlijent))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbMaterijal)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cmbMaterijal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnPretrazi, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(107, 107, 107))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtPretraga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPretrazi)
-                    .addComponent(btnPrikaziStavke)
-                    .addComponent(btnIzmeniUslugu))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(txtPretraga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(cmbZubar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addComponent(cmbKlijent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)
+                        .addComponent(cmbMaterijal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPretrazi)
+                        .addComponent(btnReset)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnIzmeniUslugu, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbNaziv)
+                    .addComponent(cbZubar)
+                    .addComponent(cbKlijent)
+                    .addComponent(cbMaterijal))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnPrikaziStavke)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 281, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPretraziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPretraziActionPerformed
-        pretraziUsluge();
+        try {
+            Usluga kriterijum = new Usluga();
+            boolean barJedanKriterijum = false;
+            
+            // 1. Naziv usluge
+            if (cbNaziv.isSelected() && !txtPretraga.getText().trim().isEmpty()) {
+                kriterijum.setNaziv(txtPretraga.getText().trim());
+                barJedanKriterijum = true;
+            }
+            
+            // 2. Zubar
+            if (cbZubar.isSelected() && cmbZubar.getSelectedItem() != null) {
+                kriterijum.setZubar((Zubar) cmbZubar.getSelectedItem());
+                barJedanKriterijum = true;
+            }
+            
+            // 3. Klijent
+            if (cbKlijent.isSelected() && cmbKlijent.getSelectedItem() != null) {
+                kriterijum.setKlijent((Klijent) cmbKlijent.getSelectedItem());
+                barJedanKriterijum = true;
+            }
+            
+            // 4. Materijal
+            if (cbMaterijal.isSelected() && cmbMaterijal.getSelectedItem() != null) {
+                kriterijum.setMaterijalZaPretragu((Materijal) cmbMaterijal.getSelectedItem());
+                barJedanKriterijum = true;
+            }
+
+            // Opciono: Ako zelis da se prikazu sve ako nije nista izabrano, sklanjas ovaj if
+            if (!barJedanKriterijum) {
+                JOptionPane.showMessageDialog(this, "Морате изабрати бар један критеријум претраге.");
+                return;
+            }
+
+            // Pozivamo klijentski kontroler (KORACI 1, 2 i 3 iz Worda)
+            List<GenericEntity> listaGE = ClientController.getInstance().searchUsluga(kriterijum);
+            
+            // KORAK 4.1: Alternativni scenario (Nema rezultata)
+            if (listaGE == null || listaGE.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Систем не може да нађе услуге по задатим критеријумима.", "Обавештење", JOptionPane.INFORMATION_MESSAGE);
+                // Cistimo tabelu
+                utm.setListaUsluga(new ArrayList<>());
+                sptm.setListaStavki(new ArrayList<>());
+                return; // Prekida se izvrsenje
+            }
+            
+            // Konvertujemo rezultate i prikazujemo
+            List<Usluga> pronadjeneUsluge = new ArrayList<>();
+            for (GenericEntity ge : listaGE) {
+                pronadjeneUsluge.add((Usluga) ge);
+            }
+            
+            utm.setListaUsluga(pronadjeneUsluge); // Osvezava se tabela
+            sptm.setListaStavki(new ArrayList<>());
+            
+            // KORAK 4: Sistem prikazuje usluge i poruku
+            JOptionPane.showMessageDialog(this, "Систем је нашао услуге по задатим критеријумима.", "Успех", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Грешка при претрази: " + ex.getMessage(), "Грешка", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnPretraziActionPerformed
 
     private void btnPrikaziStavkeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrikaziStavkeActionPerformed
@@ -138,6 +275,34 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
     private void btnIzmeniUsluguActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzmeniUsluguActionPerformed
         izmeniUslugu();
     }//GEN-LAST:event_btnIzmeniUsluguActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        try {
+            // 1. Čistimo sva polja i odčekiramo kriterijume na formi
+            txtPretraga.setText("");
+            cbNaziv.setSelected(false);
+            cbZubar.setSelected(false);
+            cbKlijent.setSelected(false);
+            cbMaterijal.setSelected(false);
+
+            // 2. Pozivamo server da nam vrati SVE usluge (bez filtera)
+            List<GenericEntity> listaGE = ClientController.getInstance().getAllUsluga();
+            
+            List<Usluga> sveUsluge = new ArrayList<>();
+            for (GenericEntity ge : listaGE) {
+                sveUsluge.add((Usluga) ge);
+            }
+            
+            // 3. Vraćamo sve usluge u gornju tabelu
+            utm.setListaUsluga(sveUsluge); 
+            
+            // 4. Čistimo donju tabelu sa stavkama
+            sptm.setListaStavki(new ArrayList<>()); 
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Грешка при учитавању свих услуга: " + ex.getMessage(), "Грешка", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnResetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -178,7 +343,18 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
     private javax.swing.JButton btnIzmeniUslugu;
     private javax.swing.JButton btnPretrazi;
     private javax.swing.JButton btnPrikaziStavke;
+    private javax.swing.JButton btnReset;
+    private javax.swing.JCheckBox cbKlijent;
+    private javax.swing.JCheckBox cbMaterijal;
+    private javax.swing.JCheckBox cbNaziv;
+    private javax.swing.JCheckBox cbZubar;
+    private javax.swing.JComboBox<Klijent> cmbKlijent;
+    private javax.swing.JComboBox<Materijal> cmbMaterijal;
+    private javax.swing.JComboBox<Zubar> cmbZubar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblStavke;
@@ -201,7 +377,43 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Greska pri ucitavanju usluga");
         }
     }
+    
+    private void ucitajZubare() {
+        try {
+            List<GenericEntity> lista = ClientController.getInstance().getAllZubar();
+            cmbZubar.removeAllItems();
+            for (GenericEntity ge : lista) {
+                cmbZubar.addItem((Zubar) ge);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Greska pri ucitavanju zubara: " + e.getMessage());
+        }
+    }
 
+    private void ucitajKlijente() {
+        try {
+            List<GenericEntity> lista = ClientController.getInstance().getAllKlijent();
+            cmbKlijent.removeAllItems();
+            for (GenericEntity ge : lista) {
+                cmbKlijent.addItem((Klijent) ge);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Greska pri ucitavanju klijenata: " + e.getMessage());
+        }
+    }
+
+    private void ucitajMaterijale() {
+        try {
+            List<GenericEntity> lista = ClientController.getInstance().getAllMaterijal();
+            cmbMaterijal.removeAllItems();
+            for (GenericEntity ge : lista) {
+                cmbMaterijal.addItem((Materijal) ge);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Greska pri ucitavanju materijala: " + e.getMessage());
+        }
+    }
+/*
     private void pretraziUsluge() {
         try {
             String kriterijum = txtPretraga.getText();
@@ -218,7 +430,7 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
-
+*/
     private void prikaziStavke() {
         int row = tblUsluga.getSelectedRow();
 
@@ -242,21 +454,64 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
+    
 
     private void izmeniUslugu() {
         int row = tblUsluga.getSelectedRow();
 
         if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Izaberite uslugu");
+            JOptionPane.showMessageDialog(this, "Морате одабрати услугу из табеле.");
             return;
         }
 
-        Usluga u = utm.getUslugaAt(row);
-        new FrmUsluga(this, u).setVisible(true);
+        try {
+            // 1. Uzimamo osnovne podatke o usluzi iz tabele
+            Usluga u = utm.getUslugaAt(row);
+            
+            // 2. KORAK 6 i 7: Zovemo sistem da nađe uslugu (učitavamo njene stavke iz baze)
+            List<GenericEntity> stavkeGE = ClientController.getInstance().getStavkeByUsluga(u);
+            
+            // Konvertujemo rezultate i pakujemo ih u listu stavki nase usluge
+            List<StavkaUsluge> ucitaneStavke = new ArrayList<>();
+            for (GenericEntity ge : stavkeGE) {
+                ucitaneStavke.add((StavkaUsluge) ge);
+            }
+            u.setStavke(ucitaneStavke);
+
+            // 3. KORAK 8: Sistem prikazuje poruku (OBAVEZNO ZA SK3)
+            JOptionPane.showMessageDialog(this, "Систем је нашао услугу.", "Успех", JOptionPane.INFORMATION_MESSAGE);
+
+            // 4. Otvaramo formu. Sada objekat 'u' u sebi sadrži i sve stavke!
+            new FrmUsluga(this, u).setVisible(true);
+
+        } catch (Exception ex) {
+            // KORAK 8.1: Alternativni scenario
+            JOptionPane.showMessageDialog(this, "Систем не може да нађе услугу.", "Грешка", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     public void osveziTabeluUsluga(){
         ucitajUsluge();
         sptm.setListaStavki(new ArrayList<>());
+    }
+    
+    public void osveziTabelu() {
+        try {
+            // Povlacimo sve usluge iz baze ponovo
+            List<GenericEntity> listaGE = ClientController.getInstance().getAllUsluga();
+            List<Usluga> sveUsluge = new ArrayList<>();
+            for (GenericEntity ge : listaGE) {
+                sveUsluge.add((Usluga) ge);
+            }
+            
+            // Postavljamo novu listu u gornju tabelu
+            utm.setListaUsluga(sveUsluge);
+            
+            // Cistimo donju tabelu
+            sptm.setListaStavki(new ArrayList<>());
+            
+        } catch (Exception ex) {
+            System.out.println("Greska pri osvezavanju tabele: " + ex.getMessage());
+        }
     }
 }

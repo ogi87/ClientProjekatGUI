@@ -33,6 +33,7 @@ public class Communication {
     public void sendRequest(Request request) throws Exception {
         out.writeObject(request);
         out.flush();
+        out.reset(); // ovde je bio problem sto nisam imao ovo
     }
 
     public Response receiveResponse() throws Exception {
