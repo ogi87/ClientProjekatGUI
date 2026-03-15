@@ -20,6 +20,7 @@ import rs.ac.bg.fon.ps.common.domain.Klijent;
 public class FrmPregledKlijenata extends javax.swing.JFrame {
 
     private KlijentTableModel ktm;
+
     /**
      * Creates new form FrmPregledKlijenata
      */
@@ -28,7 +29,6 @@ public class FrmPregledKlijenata extends javax.swing.JFrame {
         initComponents();
         pripremiFormu();
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -178,24 +178,23 @@ public class FrmPregledKlijenata extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPretraziActionPerformed
 
     private void tblKlijentiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKlijentiMouseClicked
-       // Корак 5: Зубар бира клијента (двоуклик)
+        // Корак 5: Зубар бира клијента (двоуклик)
         if (evt.getClickCount() == 2) {
-            
+
             int odabraniRed = tblKlijenti.getSelectedRow();
             if (odabraniRed == -1) {
-                return; 
+                return;
             }
 
             try {
                 // Узимамо клијента директно из табеле
                 KlijentTableModel ktm = (KlijentTableModel) tblKlijenti.getModel();
                 Klijent izabraniKlijent = ktm.getKlijentAt(odabraniRed);
-                
-                // ДОДАЈ САМО ОВУ ЛИНИЈУ ЗА ТЕСТ
-               // izabraniKlijent.setIme("НепостојећиКлијент123");
 
+                // test
+                // izabraniKlijent.setIme("НепостојећиКлијент123");
                 // Корак 6 и 7: Систем тражи клијента 
-                // (Шаљемо целог клијента у твоју searchKlijent методу да бисмо га опет "провукли" кроз базу због правила СК)
+                // (Шаљемо целог клијента у searchKlijent методу да бисмо га опет "провукли" кроз базу због правила СК јер су тако рекли на ТГ)
                 List<GenericEntity> nadjeni = ClientController.getInstance().searchKlijent(izabraniKlijent);
 
                 // Корак 8.1: Алтернативни сценарио
@@ -205,10 +204,10 @@ public class FrmPregledKlijenata extends javax.swing.JFrame {
 
                 Klijent ucitaniKlijent = (Klijent) nadjeni.get(0);
 
-                // Корак 8: Систем приказује поруку...
+                // Корак 8: Систем приказује поруку
                 JOptionPane.showMessageDialog(this, "Систем је нашао клијента.", "Успех", JOptionPane.INFORMATION_MESSAGE);
 
-                // ...и отвара ону нашу нову форму са подацима!
+                //и отвара ону нашу нову форму са подацима!
                 new FrmDetaljiKlijenta(ucitaniKlijent).setVisible(true);
 
             } catch (Exception ex) {
@@ -220,25 +219,24 @@ public class FrmPregledKlijenata extends javax.swing.JFrame {
     }//GEN-LAST:event_tblKlijentiMouseClicked
 
     private void btnPonistiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPonistiActionPerformed
-        // 1. Resetujemo sva polja na formi
+
         txtPretraga.setText("");
         cbIme.setSelected(false);
         cbKategorija.setSelected(false);
         if (cmbKategorija.getItemCount() > 0) {
-            cmbKategorija.setSelectedIndex(0); 
+            cmbKategorija.setSelectedIndex(0);
         }
 
-        // 2. Pozivamo tvoju gotovu metodu da vrati sve klijente!
         osveziTabelu();
     }//GEN-LAST:event_btnPonistiActionPerformed
 
     private void btnPromeniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPromeniActionPerformed
-        // Корак 5: Зубар бира клијента (али сада преко дугмета)
+        // Корак 5: Зубар бира клијента
         int odabraniRed = tblKlijenti.getSelectedRow();
-        
+
         if (odabraniRed == -1) {
             JOptionPane.showMessageDialog(this, "Морате изабрати клијента из табеле да бисте га променили.", "Упозорење", JOptionPane.WARNING_MESSAGE);
-            return; 
+            return;
         }
 
         try {
@@ -257,7 +255,7 @@ public class FrmPregledKlijenata extends javax.swing.JFrame {
             // Корак 8: Систем приказује поруку
             JOptionPane.showMessageDialog(this, "Систем је нашао клијента спремног за измену.", "Успех", JOptionPane.INFORMATION_MESSAGE);
 
-            // Отварамо FrmKlijent (која има падајући мени и дугме сачувај) и шаљемо јој клијента!
+            // Отварамо FrmKlijent
             new FrmKlijent(this, ucitaniKlijent, "IZMENA").setVisible(true);
 
         } catch (Exception ex) {
@@ -272,7 +270,6 @@ public class FrmPregledKlijenata extends javax.swing.JFrame {
             KlijentTableModel model = (KlijentTableModel) tblKlijenti.getModel();
             Klijent selektovaniKlijent = model.getKlijentAt(row);
 
-            // ОТВАРАЊЕ ФОРМЕ: Исто као горе, само је мод другачији
             FrmKlijent frm = new FrmKlijent(this, selektovaniKlijent, "BRISANJE");
             frm.setVisible(true);
         } else {
@@ -331,7 +328,7 @@ public class FrmPregledKlijenata extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void pretrazi() {
-       try {
+        try {
             Klijent kriterijum = new Klijent();
             boolean barJedan = false;
 
@@ -353,13 +350,12 @@ public class FrmPregledKlijenata extends javax.swing.JFrame {
             }
 
             // KORAK 1, 2 i 3: Pozivamo sistem
-            // (Pretpostavljam da imaš metodu searchKlijent u ClientController-u)
             List<GenericEntity> listaGE = ClientController.getInstance().searchKlijent(kriterijum);
 
             // KORAK 4.1: Alternativni scenario (Nema rezultata)
             if (listaGE == null || listaGE.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Систем не може да нађе клијенте по задатим критеријумима.", "Обавештење", JOptionPane.ERROR_MESSAGE);
-                ktm.setListaKlijenata(new ArrayList<>()); // Čistimo tabelu
+                ktm.setListaKlijenata(new ArrayList<>());
                 return;
             }
 
@@ -368,11 +364,9 @@ public class FrmPregledKlijenata extends javax.swing.JFrame {
             for (GenericEntity ge : listaGE) {
                 nadjeniKlijenti.add((Klijent) ge);
             }
-            
-            // OVO JE KLJUČNO: Moramo da uzmemo model koji je VEĆ prikačen za tabelu na ekranu!
+
             KlijentTableModel ktm = (KlijentTableModel) tblKlijenti.getModel();
-            
-            // I onda u njega ubacimo filtriranu listu (samo Ognjena)
+
             ktm.setListaKlijenata(nadjeniKlijenti);
 
             // KORAK 4: Sistem prikazuje poruku o uspehu
@@ -389,18 +383,15 @@ public class FrmPregledKlijenata extends javax.swing.JFrame {
             List<GenericEntity> kategorije = ClientController.getInstance().getAllKategorijaKlijenta();
             cmbKategorija.removeAllItems();
             for (GenericEntity ge : kategorije) {
-                cmbKategorija.addItem((KategorijaKlijenta)ge); // Napomena: kastuj u (KategorijaKlijenta) ako IDE traži
+                cmbKategorija.addItem((KategorijaKlijenta) ge); 
             }
 
-            // 2. Postavljamo prazan model tabele (da ne bude onaj podrazumevani Title 1, Title 2...)
-            // Pretpostavljam da imaš klasu KlijentTableModel u klijentskom projektu
-            KlijentTableModel ktm = new KlijentTableModel(); 
+            KlijentTableModel ktm = new KlijentTableModel();
             tblKlijenti.setModel(ktm);
-            
-            // OVO DODAJEMO: Odmah učitavamo sve klijente po otvaranju!
+
             // Šaljemo potpuno prazan objekat Klijent, pa će getWhereCondition vratiti "1=1"
             List<GenericEntity> listaGE = ClientController.getInstance().searchKlijent(new Klijent());
-            
+
             if (listaGE != null && !listaGE.isEmpty()) {
                 List<Klijent> sviKlijenti = new ArrayList<>();
                 for (GenericEntity ge : listaGE) {
@@ -413,22 +404,23 @@ public class FrmPregledKlijenata extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Грешка при припреми форме: " + ex.getMessage());
         }
     }
+
     public void osveziTabelu() {
         try {
-            // Uzimamo sve klijente iz baze (opet sa praznim objektom za 1=1 upit)
+            // Uzimamo sve klijente iz baze
             List<GenericEntity> listaGE = ClientController.getInstance().searchKlijent(new Klijent());
             List<Klijent> sviKlijenti = new ArrayList<>();
-            
+
             if (listaGE != null) {
                 for (GenericEntity ge : listaGE) {
                     sviKlijenti.add((Klijent) ge);
                 }
             }
-            
+
             // Ubacujemo novu listu u tabelu
             KlijentTableModel ktm = (KlijentTableModel) tblKlijenti.getModel();
             ktm.setListaKlijenata(sviKlijenti);
-            
+
         } catch (Exception ex) {
             System.out.println("Greska pri osvezavanju tabele: " + ex.getMessage());
         }

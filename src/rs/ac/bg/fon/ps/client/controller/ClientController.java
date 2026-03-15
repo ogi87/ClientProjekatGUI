@@ -158,7 +158,7 @@ public class ClientController {
         }
     }
 
-    // ================== SIFARNICI (Samo citanje) ==================
+    // ================== SIFARNICI ==================
     public List<GenericEntity> getAllZubar() throws Exception {
         Request request = new Request(Operations.GET_ALL_ZUBAR, null);
         Communication.getInstance().sendRequest(request);

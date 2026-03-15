@@ -23,7 +23,6 @@ public class Communication {
         }
     }
     
-    // Ова метода нам омогућава да "убијемо" стару конекцију
     public static void resetInstance() {
         instance = null;
     }

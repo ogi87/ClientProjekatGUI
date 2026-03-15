@@ -174,13 +174,13 @@ public class FrmKvalifikacija extends javax.swing.JFrame {
             // Корак 3 и 4: Систем памти
             ClientController.getInstance().addKvalifikacija(k);
 
-            // Корак 5: Порука о успеху из документације
+            // Корак 5: Порука о успеху
             JOptionPane.showMessageDialog(this, "Систем је запамтио квалификације.", "Успех", JOptionPane.INFORMATION_MESSAGE);
 
-            // ОСВЕЖАВАЊЕ ТАБЕЛЕ (твој део који је недостајао)
+            // ОСВЕЖАВАЊЕ ТАБЕЛЕ 
             ucitajKvalifikacije();
 
-            // Чистимо поље за следећи унос
+            // Чистимо поље 
             txtNaziv.setText("");
 
         } catch (Exception e) {

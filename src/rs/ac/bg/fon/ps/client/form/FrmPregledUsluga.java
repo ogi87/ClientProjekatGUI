@@ -22,10 +22,10 @@ import rs.ac.bg.fon.ps.common.domain.Zubar;
  * @author ognje
  */
 public class FrmPregledUsluga extends javax.swing.JFrame {
-    
+
     private UslugaTableModel utm;
     private StavkaPregledTableModel sptm;
-    
+
     /**
      * Creates new form FrmPregledUsluga
      */
@@ -208,59 +208,55 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
         try {
             Usluga kriterijum = new Usluga();
             boolean barJedanKriterijum = false;
-            
+
             // 1. Naziv usluge
             if (cbNaziv.isSelected() && !txtPretraga.getText().trim().isEmpty()) {
                 kriterijum.setNaziv(txtPretraga.getText().trim());
                 barJedanKriterijum = true;
             }
-            
+
             // 2. Zubar
             if (cbZubar.isSelected() && cmbZubar.getSelectedItem() != null) {
                 kriterijum.setZubar((Zubar) cmbZubar.getSelectedItem());
                 barJedanKriterijum = true;
             }
-            
+
             // 3. Klijent
             if (cbKlijent.isSelected() && cmbKlijent.getSelectedItem() != null) {
                 kriterijum.setKlijent((Klijent) cmbKlijent.getSelectedItem());
                 barJedanKriterijum = true;
             }
-            
+
             // 4. Materijal
             if (cbMaterijal.isSelected() && cmbMaterijal.getSelectedItem() != null) {
                 kriterijum.setMaterijalZaPretragu((Materijal) cmbMaterijal.getSelectedItem());
                 barJedanKriterijum = true;
             }
 
-            // Opciono: Ako zelis da se prikazu sve ako nije nista izabrano, sklanjas ovaj if
             if (!barJedanKriterijum) {
                 JOptionPane.showMessageDialog(this, "Морате изабрати бар један критеријум претраге.");
                 return;
             }
 
-            // Pozivamo klijentski kontroler (KORACI 1, 2 i 3 iz Worda)
             List<GenericEntity> listaGE = ClientController.getInstance().searchUsluga(kriterijum);
-            
+
             // KORAK 4.1: Alternativni scenario (Nema rezultata)
             if (listaGE == null || listaGE.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Систем не може да нађе услуге по задатим критеријумима.", "Обавештење", JOptionPane.ERROR_MESSAGE);
-                // Cistimo tabelu
+                // Cistim tabelu
                 utm.setListaUsluga(new ArrayList<>());
                 sptm.setListaStavki(new ArrayList<>());
-                return; // Prekida se izvrsenje
+                return;
             }
-            
-            // Konvertujemo rezultate i prikazujemo
+
             List<Usluga> pronadjeneUsluge = new ArrayList<>();
             for (GenericEntity ge : listaGE) {
                 pronadjeneUsluge.add((Usluga) ge);
             }
-            
+
             utm.setListaUsluga(pronadjeneUsluge); // Osvezava se tabela
             sptm.setListaStavki(new ArrayList<>());
-            
-            // KORAK 4: Sistem prikazuje usluge i poruku
+
             JOptionPane.showMessageDialog(this, "Систем је нашао услуге по задатим критеријумима.", "Успех", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (Exception ex) {
@@ -278,26 +274,23 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         try {
-            // 1. Čistimo sva polja i odčekiramo kriterijume na formi
             txtPretraga.setText("");
             cbNaziv.setSelected(false);
             cbZubar.setSelected(false);
             cbKlijent.setSelected(false);
             cbMaterijal.setSelected(false);
 
-            // 2. Pozivamo server da nam vrati SVE usluge (bez filtera)
+            //Pozivamo server da nam vrati SVE usluge (bez filtera)
             List<GenericEntity> listaGE = ClientController.getInstance().getAllUsluga();
-            
+
             List<Usluga> sveUsluge = new ArrayList<>();
             for (GenericEntity ge : listaGE) {
                 sveUsluge.add((Usluga) ge);
             }
-            
-            // 3. Vraćamo sve usluge u gornju tabelu
-            utm.setListaUsluga(sveUsluge); 
-            
-            // 4. Čistimo donju tabelu sa stavkama
-            sptm.setListaStavki(new ArrayList<>()); 
+
+            utm.setListaUsluga(sveUsluge);
+
+            sptm.setListaStavki(new ArrayList<>());
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Грешка при учитавању свих услуга: " + ex.getMessage(), "Грешка", JOptionPane.ERROR_MESSAGE);
@@ -377,7 +370,7 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Greska pri ucitavanju usluga");
         }
     }
-    
+
     private void ucitajZubare() {
         try {
             List<GenericEntity> lista = ClientController.getInstance().getAllZubar();
@@ -413,7 +406,8 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Greska pri ucitavanju materijala: " + e.getMessage());
         }
     }
-/*
+
+    /*
     private void pretraziUsluge() {
         try {
             String kriterijum = txtPretraga.getText();
@@ -430,7 +424,7 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
-*/
+     */
     private void prikaziStavke() {
         int row = tblUsluga.getSelectedRow();
 
@@ -440,36 +434,29 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
         }
 
         try {
-            // Корак 5: Зубар бира услугу
             Usluga u = utm.getUslugaAt(row);
 
-            // Корак 6 и 7: Систем тражи услугу (њене ставке)
-            
             List<GenericEntity> lista = ClientController.getInstance().getStavkeByUsluga(u);
-            
-            // ДОДАЈ ОВО: Ако је листа празна, значи да је услуга обрисана у међувремену!
+
             if (lista == null || lista.isEmpty()) {
                 throw new Exception("Услуга више не постоји у бази.");
             }
-            
+
             List<StavkaUsluge> stavke = new ArrayList<>();
 
             for (GenericEntity ge : lista) {
                 stavke.add((StavkaUsluge) ge);
             }
 
-            // Пунимо доњу табелу
             sptm.setListaStavki(stavke);
 
-            // Корак 8: Систем приказује поруку (ДОДАЈЕМО ОВО)
             JOptionPane.showMessageDialog(this, "Систем је нашао услугу.", "Информација", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (Exception e) {
-            // Алтернативни сценарио 8.1: Мењамо e.getMessage() у тачан текст из документације
+            // Алтернативни сценарио 8.1:
             JOptionPane.showMessageDialog(this, "Систем не може да нађе услугу", "Грешка", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
 
     private void izmeniUslugu() {
         int row = tblUsluga.getSelectedRow();
@@ -482,21 +469,19 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
         try {
             // 1. Uzimamo osnovne podatke o usluzi iz tabele
             Usluga u = utm.getUslugaAt(row);
-            
+
             // 2. KORAK 6 i 7: Zovemo sistem da nađe uslugu (učitavamo njene stavke iz baze)
             List<GenericEntity> stavkeGE = ClientController.getInstance().getStavkeByUsluga(u);
-            
-            // Konvertujemo rezultate i pakujemo ih u listu stavki nase usluge
+
             List<StavkaUsluge> ucitaneStavke = new ArrayList<>();
             for (GenericEntity ge : stavkeGE) {
                 ucitaneStavke.add((StavkaUsluge) ge);
             }
             u.setStavke(ucitaneStavke);
 
-            // 3. KORAK 8: Sistem prikazuje poruku (OBAVEZNO ZA SK3)
+            // 3. KORAK 8: Sistem prikazuje poruku
             JOptionPane.showMessageDialog(this, "Систем је нашао услугу.", "Успех", JOptionPane.INFORMATION_MESSAGE);
 
-            // 4. Otvaramo formu. Sada objekat 'u' u sebi sadrži i sve stavke!
             new FrmUsluga(this, u).setVisible(true);
 
         } catch (Exception ex) {
@@ -504,27 +489,24 @@ public class FrmPregledUsluga extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Систем не може да нађе услугу.", "Грешка", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    public void osveziTabeluUsluga(){
+
+    public void osveziTabeluUsluga() {
         ucitajUsluge();
         sptm.setListaStavki(new ArrayList<>());
     }
-    
+
     public void osveziTabelu() {
         try {
-            // Povlacimo sve usluge iz baze ponovo
             List<GenericEntity> listaGE = ClientController.getInstance().getAllUsluga();
             List<Usluga> sveUsluge = new ArrayList<>();
             for (GenericEntity ge : listaGE) {
                 sveUsluge.add((Usluga) ge);
             }
-            
-            // Postavljamo novu listu u gornju tabelu
+
             utm.setListaUsluga(sveUsluge);
-            
-            // Cistimo donju tabelu
+
             sptm.setListaStavki(new ArrayList<>());
-            
+
         } catch (Exception ex) {
             System.out.println("Greska pri osvezavanju tabele: " + ex.getMessage());
         }

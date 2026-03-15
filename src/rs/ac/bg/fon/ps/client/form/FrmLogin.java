@@ -5,12 +5,10 @@
 package rs.ac.bg.fon.ps.client.form;
 
 //import javax.swing.JFrame;
-
 import javax.swing.JOptionPane;
 import rs.ac.bg.fon.ps.client.communication.Communication;
 import rs.ac.bg.fon.ps.client.controller.ClientController;
 import rs.ac.bg.fon.ps.common.domain.Zubar;
-
 
 /**
  *
@@ -92,10 +90,10 @@ public class FrmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-            try {
+        try {
             // Корак 1: Зубар уноси корисничко име и шифру
-            String username = txtUsername.getText().trim(); // Провери како ти се зове ово поље (txtKorisnickoIme или txtUsername)
-            String password = new String(txtPassword.getPassword()); // Провери како ти се зове ово поље (txtSifra или txtPassword)
+            String username = txtUsername.getText().trim();
+            String password = new String(txtPassword.getPassword());
 
             // Корак 2: Зубар контролише да ли је коректно унео податке
             if (username.isEmpty() || password.isEmpty()) {
@@ -108,20 +106,20 @@ public class FrmLogin extends javax.swing.JFrame {
             zubar.setKorisnickoIme(username);
             zubar.setSifra(password);
 
-            // Корак 3 и 4: Зубар позива систем и систем проверава (ово гађа твој нови LoginSO)
+            // Корак 3 и 4: Зубар позива систем и систем проверава 
             Zubar ulogovaniZubar = ClientController.getInstance().login(zubar);
 
-            // Корак 5: Порука о успеху (ОБАВЕЗНО ТАЧАН ТЕКСТ ИЗ ДОКУМЕНТАЦИЈЕ)
+            // Корак 5: Порука о успеху 
             JOptionPane.showMessageDialog(this, "Корисничко име и шифра су исправни.", "Информација", JOptionPane.INFORMATION_MESSAGE);
 
-            // Корак 6: КИ позива главну форму и мени
+            // Корак 6: позива главну форму и мени
             try {
-                // Отварање главне форме (претпостављам да прослеђујеш улогованог зубара)
-                FrmMain frmMain = new FrmMain(ulogovaniZubar); 
+                // Отварање главне форме 
+                FrmMain frmMain = new FrmMain(ulogovaniZubar);
                 frmMain.setVisible(true);
 
                 // Затварање форме за пријављивање
-                this.dispose(); 
+                this.dispose();
 
             } catch (Exception ex) {
                 // Алтернативни сценарио 6.1: Грешка при отварању форме
@@ -130,18 +128,18 @@ public class FrmLogin extends javax.swing.JFrame {
             }
 
         } catch (Exception ex) {
-        ex.printStackTrace();
-        
-        // Проверавамо да ли је грешка баш она коју је наш LoginSO бацио
-        if (ex.getMessage() != null && ex.getMessage().equals("Корисничко име и шифра нису исправни")) {
-            JOptionPane.showMessageDialog(this, "Корисничко име и шифра нису исправни", "Грешка", JOptionPane.ERROR_MESSAGE);
-        } else {
-            // Ако је било шта друго (нпр. угашен сервер, пукла мрежа...)
-            JOptionPane.showMessageDialog(this, "Прекинута је веза са сервером! Проверите да ли је сервер покренут.", "Грешка мреже", JOptionPane.ERROR_MESSAGE);
-            
-            // МАГИЈА: Ресетујемо конекцију! Тако да кад зубар следећи пут кликне "Пријави се", клијент покуша изнова.
-            Communication.resetInstance(); 
-        }     }
+            ex.printStackTrace();
+
+            if (ex.getMessage() != null && ex.getMessage().equals("Корисничко име и шифра нису исправни")) {
+                JOptionPane.showMessageDialog(this, "Корисничко име и шифра нису исправни", "Грешка", JOptionPane.ERROR_MESSAGE);
+            } else {
+                // Ако је било шта друго (нпр. угашен сервер, пукла мрежа...)
+                JOptionPane.showMessageDialog(this, "Прекинута је веза са сервером! Проверите да ли је сервер покренут.", "Грешка мреже", JOptionPane.ERROR_MESSAGE);
+
+                //Ресетујемо конекцију 
+                Communication.resetInstance();
+            }
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**

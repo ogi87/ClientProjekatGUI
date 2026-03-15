@@ -26,8 +26,7 @@ public class FrmUsluga extends javax.swing.JFrame {
     private StavkaUslugeTableModel sutm;
     private Usluga kreiranaUsluga;
     private Usluga uslugaZaIzmenu;
-   
-    
+
     /**
      * Creates new form FrmUsluga
      */
@@ -37,17 +36,14 @@ public class FrmUsluga extends javax.swing.JFrame {
         ucitajZubare();
         ucitajKlijente();
         ucitajMaterijale();
-        
-        
+
     }
-    
-    public FrmUsluga(FrmPregledUsluga parentForma, Usluga usluga){
+
+    public FrmUsluga(FrmPregledUsluga parentForma, Usluga usluga) {
         this();
         this.parentForma = parentForma;
         this.uslugaZaIzmenu = usluga;
-        
-        // --- OVO JE DEO KOJI DODAJEMO DA OTKLJUČAMO FORMU ZA SK3 ---
-        // Otključavamo sva polja za unos
+
         txtNaziv.setEnabled(true);
         cmbZubar.setEnabled(true);
         cmbKlijent.setEnabled(true);
@@ -55,31 +51,24 @@ public class FrmUsluga extends javax.swing.JFrame {
         txtKolicina.setEnabled(true);
         txtPopust.setEnabled(true);
         tblStavke.setEnabled(true);
-       
-        
-        // Otključavamo dugmiće za rad sa tabelom
+
         btnDodajStavku.setEnabled(true);
         btnObrisiStavku.setEnabled(true);
-        
-        // Palimo dugme za čuvanje izmena
+
         btnSacuvaj.setEnabled(true);
         btnIzracunaj.setEnabled(true);
         txtPopust.setEnabled(true);
-        
-        
+
         btnSacuvaj.setText("Izmeni uslugu");
-        
-        // Gasimo i sakrivamo dugme "Kreiraj" jer nam ovde ne treba
+
         if (btnKreiraj != null) {
             btnKreiraj.setEnabled(false);
             btnKreiraj.setVisible(false);
         }
-        
+
         popuniFormu(usluga);
         btnSacuvaj.setText("Izmeni uslugu");
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -330,24 +319,21 @@ public class FrmUsluga extends javax.swing.JFrame {
             inicijalna.setUkupanIznos(0);
             inicijalna.setPopust(0);
             inicijalna.setUkupanIznosSaPopustom(0);
-            
-            Zubar z = new Zubar(); 
+
+            Zubar z = new Zubar();
             z.setZubarId(1L);
             inicijalna.setZubar(z);
-            
-            Klijent k = new Klijent(); 
+
+            Klijent k = new Klijent();
             k.setKlijentId(1L);
             inicijalna.setKlijent(k);
 
-            // Pozivamo server
             this.kreiranaUsluga = ClientController.getInstance().kreirajUslugu(inicijalna);
-            
-            // OBAVEZNA PORUKA IZ SK1
+
             javax.swing.JOptionPane.showMessageDialog(this, "Систем је креирао услугу.", "Обавештење", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            
-            // OTKLJUČAVAMO FORMU
-            btnKreiraj.setEnabled(false); // Sakrivamo/gasimo dugme Kreiraj
-            btnSacuvaj.setEnabled(true);  // Palimo dugme Zapamti/Sacuvaj
+
+            btnKreiraj.setEnabled(false);
+            btnSacuvaj.setEnabled(true);
             btnDodajStavku.setEnabled(true);
             btnObrisiStavku.setEnabled(true);
             btnIzracunaj.setEnabled(true);
@@ -360,11 +346,9 @@ public class FrmUsluga extends javax.swing.JFrame {
             txtPopust.setEnabled(true);
             txtUkupanIznos.setEnabled(true);
             txtUkupanSaPopustom.setEnabled(true);
-            
-            
 
         } catch (Exception ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Систем не може да креира услугу." , "Грешка", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Систем не може да креира услугу.", "Грешка", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnKreirajActionPerformed
 
@@ -563,11 +547,9 @@ public class FrmUsluga extends javax.swing.JFrame {
                 return;
             }
 
-            // --- POCETAK GLAVNE IZMENE ---
             Usluga u;
             boolean isKreiraj = false;
 
-            // Proveravamo u kom smo rezimu (SK1 - Kreiraj ili SK3 - Izmeni)
             if (kreiranaUsluga != null) {
                 u = kreiranaUsluga; // Koristimo onu koja vec ima kreiran ID iz baze
                 isKreiraj = true;
@@ -578,7 +560,6 @@ public class FrmUsluga extends javax.swing.JFrame {
                 return;
             }
 
-            // Setujemo podatke sa ekrana u taj objekat
             u.setNaziv(naziv);
             u.setZubar(zubar);
             u.setKlijent(klijent);
@@ -593,33 +574,28 @@ public class FrmUsluga extends javax.swing.JFrame {
             u.setPopust(popust);
             u.setUkupanIznosSaPopustom(Double.parseDouble(txtUkupanSaPopustom.getText().trim()));
 
-            // Pozivi ka serveru i PORUKE IZ WORD DOKUMENTA
             if (isKreiraj) {
                 ClientController.getInstance().zapamtiUslugu(u);
-                // Obavezna poruka iz SK1:
                 JOptionPane.showMessageDialog(this, "Систем је запамтио услугу.", "Успех", JOptionPane.INFORMATION_MESSAGE);
             } else {
-               // System.out.println("SALJEM NA SERVER STAVKI: " + u.getStavke().size());
-                
+
                 ClientController.getInstance().zapamtiUslugu(u);
-                // Poruka za SK3 (Izmeni/Promeni)
                 JOptionPane.showMessageDialog(this, "Систем је запамтио податке о услузи.", "Успех", JOptionPane.INFORMATION_MESSAGE);
-                
-                if(parentForma != null){
-               
+
+                if (parentForma != null) {
+
                     parentForma.osveziTabelu();
                 }
             }
-            
+
             dispose();
 
         } catch (Exception e) {
-            // Obavezne alternativne poruke u slucaju greske baze/servera
-            e.printStackTrace(); // OVO NAM TREBA!
+            // e.printStackTrace();
             if (kreiranaUsluga != null) {
-                JOptionPane.showMessageDialog(this, "Систем не може да запамти услугу." , "Грешка", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Систем не може да запамти услугу.", "Грешка", JOptionPane.ERROR_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Систем не може да запамти податке о услузи." , "Грешка", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Систем не може да запамти податке о услузи.", "Грешка", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -634,8 +610,6 @@ public class FrmUsluga extends javax.swing.JFrame {
             cmbZubar.setSelectedItem(u.getZubar());
             cmbKlijent.setSelectedItem(u.getKlijent());
 
-            // OVO JE PROMENJENO: Ne idemo ponovo na server!
-            // Samo uzimamo stavke koje smo vec prosledili kroz objekat 'u'
             if (u.getStavke() != null) {
                 sutm.setLista(new ArrayList<>(u.getStavke()));
             }

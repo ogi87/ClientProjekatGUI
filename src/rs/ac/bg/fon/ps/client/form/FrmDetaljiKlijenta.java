@@ -18,13 +18,11 @@ public class FrmDetaljiKlijenta extends javax.swing.JFrame {
     public FrmDetaljiKlijenta(Klijent k) {
         initComponents();
         
-        // Попуњавамо поља подацима које смо добили
         txtIme.setText(k.getIme());
         txtPrezime.setText(k.getPrezime());
         txtKontakt.setText(k.getKontakt());
         txtKategorija.setText(k.getKategorija().getNaziv());
         
-        // Ставимо наслов прозора да буде леп
         setTitle("Детаљи о клијенту");
         
     }
